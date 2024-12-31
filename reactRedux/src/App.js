@@ -1,8 +1,14 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  return (<div className="App">
-    deneme
-  </div>
+  return (
+    <div className="">
+      <Router>
+        <Routes>
+          <Route />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
