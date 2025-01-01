@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import ProductCard from "../components/ProductCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "../components/Modal";
 import Input from "../components/Input";
 import Buttton from "../components/Buttton";
+import { createDataFunc } from "../redux/dataSlice";
 
 const Product = () => {
-  const { modal } = useSelector((state) => state.modal.modal); // Doğru erişim
+  const { modal } = useSelector((state) => state.modal.modal);
 
   console.log(modal, "modal");
+
+  const dispatch = useDispatch();
 
   const [productInfo, setProductInfo] = useState({
     name: "",
@@ -29,7 +32,9 @@ const Product = () => {
 
   console.log(productInfo);
 
-  const buttonFunc = () => {};
+  const buttonFunc = () => {
+    dispatch(createDataFunc());
+  };
 
   const contentModal = (
     <>
@@ -54,14 +59,14 @@ const Product = () => {
         id={"url"}
         onchange={(e) => onchangeFunc(e, "url")}
       />
-      <Buttton btnText={"Olustur"} onClick={buttonFunc} />
+      <Buttton btnText={"Ürün Olustur"} onClick={buttonFunc} />
     </>
   );
 
   return (
     <div>
       <ProductCard />
-      {Modal && <Modal title={"Ürün Olustur"} content={contentModal} />}
+      {Modal && <Modal content={contentModal} title={"Ürün Olustur"} />}
     </div>
   );
 };
