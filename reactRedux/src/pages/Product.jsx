@@ -5,9 +5,11 @@ import Modal from "../components/Modal";
 import Input from "../components/Input";
 import Buttton from "../components/Buttton";
 import { createDataFunc } from "../redux/dataSlice";
+import { modalFunc } from "../redux/modalSlice";
 
 const Product = () => {
-  const { modal } = useSelector((state) => state.modal.modal);
+  const { modal } = useSelector((state) => state.modal);
+  const { data } = useSelector((state) => state.data);
 
   console.log(modal, "modal");
 
@@ -32,8 +34,11 @@ const Product = () => {
 
   console.log(productInfo);
 
+  console.log(data, "data");
+
   const buttonFunc = () => {
-    dispatch(createDataFunc());
+    dispatch(createDataFunc(productInfo));
+    dispatch(modalFunc());
   };
 
   const contentModal = (
@@ -65,7 +70,12 @@ const Product = () => {
 
   return (
     <div>
-      <ProductCard />
+      <div>
+        {data?.map((dt, i) => (
+          <ProductCard key={i} dt={dt} />
+        ))}
+      </div>
+
       {Modal && <Modal content={contentModal} title={"Ürün Olustur"} />}
     </div>
   );
