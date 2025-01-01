@@ -8,10 +8,18 @@ const Product = () => {
 
   console.log(modal, "modal");
 
+  const buttonFunc = () => {};
+
   return (
     <div>
       <ProductCard />
-      {Modal && <Modal />}
+      {Modal && (
+        <Modal
+          title={"Ürün Olustur"}
+          btnText={"Olustur"}
+          btnFunc={buttonFunc}
+        />
+      )}
     </div>
   );
 };
