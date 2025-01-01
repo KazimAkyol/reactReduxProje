@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "../components/Modal";
 import Input from "../components/Input";
 import Buttton from "../components/Buttton";
-import { createDataFunc } from "../redux/dataSlice";
+import { createDataFunc, updateDataFunc } from "../redux/dataSlice";
 import { modalFunc } from "../redux/modalSlice";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Product = () => {
   const { modal } = useSelector((state) => state.modal);
@@ -16,7 +16,9 @@ const Product = () => {
 
   const dispatch = useDispatch();
 
-  const location = useLocation()
+  const location = useLocation();
+
+  const navigate = useNavigate();
 
   const [productInfo, setProductInfo] = useState({
     name: "",
@@ -35,11 +37,13 @@ const Product = () => {
     }
   };
 
-  let loc= location?.search.split("=")[1]
+  let loc = location?.search.split("=")[1];
 
-  useEffect(()=> {
-
-  }, [])
+  useEffect(() => {
+    if (loc) {
+      setProductInfo(data.find((dt) => dt.id === loc));
+    }
+  }, [loc]);
 
   console.log(productInfo);
 
@@ -48,6 +52,12 @@ const Product = () => {
   const buttonFunc = () => {
     dispatch(createDataFunc({ ...productInfo, id: data.length + 1 }));
     dispatch(modalFunc());
+  };
+
+  const buttonUpdateFunc = () => {
+    dispatch(updateDataFunc({ ...productInfo, id: loc }));
+    dispatch(modalFunc());
+    navigate("/");
   };
 
   const contentModal = (
@@ -60,6 +70,7 @@ const Product = () => {
         onchange={(e) => onchangeFunc(e, "name")}
       />
       <Input
+        value={productInfo.name}
         type={"text"}
         placeholder={"Fiyat Ekle"}
         name={"price"}
@@ -67,13 +78,17 @@ const Product = () => {
         onchange={(e) => onchangeFunc(e, "price")}
       />
       <Input
+        value={productInfo.price}
         type={"file"}
         placeholder={"Resim Sec"}
         name={"url"}
         id={"url"}
         onchange={(e) => onchangeFunc(e, "url")}
       />
-      <Buttton btnText={"Ürün Olustur"} onClick={buttonFunc} />
+      <Buttton
+        btnText={loc ? "Ürün Güncelle" : "Ürün Olustur"}
+        onClick={loc ? buttonUpdateFunc : buttonFunc}
+      />
     </>
   );
 
@@ -85,7 +100,12 @@ const Product = () => {
         ))}
       </div>
 
-      {Modal && <Modal content={contentModal} title={"Ürün Olustur"} />}
+      {Modal && (
+        <Modal
+          content={contentModal}
+          title={loc ? "Ürün Güncelle" : "Ürün Olustur"}
+        />
+      )}
     </div>
   );
 };
