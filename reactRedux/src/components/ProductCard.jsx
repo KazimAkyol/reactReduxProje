@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import { BsThreeDots } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { deleteDataFunc } from "../redux/dataSlice";
 
 const ProductCard = ({ dt }) => {
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const dispatch = useDispatch();
+
   return (
     <div className="w-[200px] h-[200px] relative m-2 rounded-md">
       <img className="w-full h-full rounded-md" src={dt?.url} alt="" />
@@ -8,6 +15,23 @@ const ProductCard = ({ dt }) => {
         <div className="text-lg font-semibold">{dt?.name}</div>
         <div>{dt?.price}</div>
       </div>
+      <div
+        onClick={() => setOpenEdit(!openEdit)}
+        className="absolute top-0 right-2"
+      >
+        <BsThreeDots color="crimson" size={24} />
+      </div>
+      {openEdit && (
+        <div className="bg-black border-white text-white absolute top-5 right-2 p-2 text-sm">
+          <div
+            onClick={() => dispatch(deleteDataFunc(dt?.id))}
+            className="cursor-pointer"
+          >
+            Sil
+          </div>
+          <div className="cursor-pointer">Güncelle</div>
+        </div>
+      )}
     </div>
   );
 };
