@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../components/Modal";
@@ -6,6 +6,7 @@ import Input from "../components/Input";
 import Buttton from "../components/Buttton";
 import { createDataFunc } from "../redux/dataSlice";
 import { modalFunc } from "../redux/modalSlice";
+import { useLocation } from "react-router-dom";
 
 const Product = () => {
   const { modal } = useSelector((state) => state.modal);
@@ -14,6 +15,8 @@ const Product = () => {
   console.log(modal, "modal");
 
   const dispatch = useDispatch();
+
+  const location = useLocation()
 
   const [productInfo, setProductInfo] = useState({
     name: "",
@@ -32,9 +35,15 @@ const Product = () => {
     }
   };
 
+  let loc= location?.search.split("=")[1]
+
+  useEffect(()=> {
+
+  }, [])
+
   console.log(productInfo);
 
-  console.log(data, "data");
+  console.log(location?.search.split("=")[1], "data");
 
   const buttonFunc = () => {
     dispatch(createDataFunc({ ...productInfo, id: data.length + 1 }));
